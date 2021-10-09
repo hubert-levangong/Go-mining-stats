@@ -75,3 +75,24 @@ func main() {
 
 	fmt.Println("Exiting...")
 }
+
+func parseEntry(entry string) string {
+	// fmt.Println("entry: ", entry)
+	entryCleaned := strings.ReplaceAll(entry, "F: ", "F:")
+	// if strings.Compare(entry, entryCleaned) != 0 {
+	// 	fmt.Println("String had to be cleaned: ", entry, " --> ", entryCleaned)
+	// }
+	entryFields := strings.Fields(entryCleaned)
+	var data []string
+	data = append(data, entryFields[1][1:len(entryFields[1])-1]) // GPU
+	data = append(data, entryFields[6])                          // hash rate
+	temp := entryFields[8][3 : len(entryFields[8])-2]
+	temps := strings.Split(temp, "/")
+	data = append(data, temps[0])                                  // core temp
+	data = append(data, temps[1])                                  // cbridge temp
+	data = append(data, entryFields[9][2:len(entryFields[9])-2])   // power
+	data = append(data, entryFields[10][2:len(entryFields[10])-2]) // fan speed
+	data = append(data, entryFields[11][2:len(entryFields[11])-6]) // hash/power ratio
+
+	return strings.Join(data, ",")
+}
